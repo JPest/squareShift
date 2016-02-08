@@ -19,7 +19,7 @@ p {
 /* Header */
 .header {
   text-align: center;
-  background: url(/img/bgredes1.png) no-repeat center center;
+  background: url(../img/bgredes1.png) no-repeat center center;
   background-size: cover;
   height: 600px;
 }
