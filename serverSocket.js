@@ -23,7 +23,7 @@ io.on('connection', function (socket) {
 
         var roomPlayers = waitingPlayers.splice(0, 3);
 
-        for (player of players) {
+        for (player of roomPlayers) {
             player.join(roomName);
         }
 
