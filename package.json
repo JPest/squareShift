@@ -1,0 +1,28 @@
+{
+  "name": "squareshift",
+  "version": "1.0.0",
+  "description": "The best game ever",
+  "main": "serverSocket.js",
+  "dependencies": {
+    "express": "^4.10.2",
+    "socket.io": "^1.4.5"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JPest/squareShift/tree/master"
+  },
+  "keywords": [
+    "game",
+    "points",
+    "lines",
+    "multiplayer",
+    "sockets",
+    "SMD"
+  ],
+  "author": "Itallo Oliveira, Jagni Dasa e Joao Pedro",
+  "license": "ISC"
+}

@@ -1,0 +1,109 @@
+html, body {
+  margin: 0;
+}
+
+h1, h2, a {
+  font-family: 'Oswald', sans-serif;
+  text-transform: uppercase;
+}
+
+p {
+  font-family: Helvetica, Arial, sans-serif; 
+}
+
+.container {
+  max-width: 940px;
+  margin: 0 auto;
+}
+
+/* Header */
+.header {
+  text-align: center;
+  /*background: url(bgredes1.png) no-repeat center center;*/
+  background-size: cover;
+  height: 600px;
+}
+
+/*.header .container {
+  position: relative;
+  margin-left: 100px;
+}*/
+
+.header h1 {
+  position: relative;
+  color: #000;
+  margin: 0px;
+  font-size: 30px;
+  padding: 20px 0 10px;
+}
+
+.header p {
+  position: relative;
+  color: #000;
+  margin: 5px 0 20px 0;
+  font-size: 28px;
+  text-align: left;
+}
+
+.header .a {
+  position: relative;
+  color: #000;
+  margin: 5px 0 20px 0;
+  font-size: 22px;
+  text-align: left;
+}
+
+/* Infos */
+.infos {
+  background-color: #1c1c1c;
+  text-align: center;
+  padding: 50px 0 47px;
+}
+
+.infos .coluna {
+  float: left;
+  width: 28%;
+  padding: 10px;
+}
+
+.infos h2 {
+  color: #fff;
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.infos a {
+  text-decoration: none;
+}
+
+.containerfix {
+  clear: both;
+}
+
+.infos p {
+  color: #efefef;
+  margin-bottom: 20px;
+  line-height: 20px;
+  font-size: 12px;
+}
+
+/* Media Querie */
+
+@media (min-width:600px) {
+  .header h1 {
+    font-size: 80px;
+  }
+
+  .infos .coluna {
+    width: 30%;
+  }
+
+  .infos h2 {
+    font-size: 40px;
+  }
+
+  .infos p {
+    font-size: 14px;
+  }
+
+}
