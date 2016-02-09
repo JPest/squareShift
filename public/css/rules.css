@@ -21,7 +21,7 @@ p {
   text-align: center;
   /*background: url(../img/bgredes1.png) no-repeat center center;*/
   background-size: cover;
-  height: 600px;
+  height: 650px;
 }
 
 /*.header .container {
@@ -57,7 +57,7 @@ p {
 .infos {
   background-color: #1c1c1c;
   text-align: center;
-  padding: 50px 0 47px;
+  padding: 50px 0 12px;
 }
 
 .infos .coluna {
