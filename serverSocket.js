@@ -1,25 +1,20 @@
 var waitingPlayers = [];
-var games = [];
-
-//ServeStatic e connect disponibilizam uma pasta como pública, para a exibição dos htmls
-var serveStatic = require('serve-static');
-var express = require('express');
-//connect().use(express.static("public")).listen(80);
+var games = []; //Dicionário onde chave = idDaSala e valor = objeto Game
 
 //Express é um framework que permite implementar um webServer ao lidar com as requisições HTTP
+var express = require('express');
 var app = express();
 var server = require('http').Server(app);
 app.use(express.static("public"));
-
 
 //A socket.io gerencia o uso de sockets
 var io = require('socket.io')(server);
 
 io.on('connection', function (socket) {
-    console.log(waitingPlayers.length);
+    io.to(socket.id).emit("login", socket.id);
     waitingPlayers.push(socket);
-
-    if (waitingPlayers.length >= 3) {
+    
+    while (waitingPlayers.length >= 3) {
 
         var roomName = "" + (games.length + 1);
 
@@ -29,16 +24,30 @@ io.on('connection', function (socket) {
             player.join(roomName);
         }
 
-        //var game = newGame();
-        //games.push(game);
-        io.to(roomName).emit("test", "Teste de envio de mensagem");
+        var game = newGame();
+        games[roomName] = game;
+        
+        io.to(roomName).emit("test", game);
 
     }
 
-    socket.on('play', function (data) {
-        //O que será feito quando o jogador criar uma linha
-        //
-        //game.addLine(data);
+    socket.on('play', function (line) {
+        
+        var roomName = this.rooms[1];
+        var game = games[roomName];
+        game.addLine(line);
+        
+        var data = [];
+        data["line"] = line;
+        data["game"] = game;
+        io.to(roomName).emit("play", data);
+    
+        if (checkGameover()){
+            //Checar quem ganhou
+            //data = jogador
+            //io.to(roomName).emit("gameover", data);   
+        }
+    
     });
 
     socket.on('disconnect', function () {
@@ -48,3 +57,6 @@ io.on('connection', function (socket) {
 });
 
 server.listen(80);
+
+function newGame(){}
+function checkGameover(){}

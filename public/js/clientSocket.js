@@ -1,9 +1,27 @@
 var socket = io();
+var userID = "";
 
-socket.on("connect", function () {
-    alert("Connectado!");
+socket.on("login", function (socketID) {
+    userID = socketID;
+    alert(userID);
 });
 
-socket.on("test", function (msg) {
-    alert(msg);
+socket.on("play", function (data) {
+    drawLine(data["line"]);
+    
+    if (data["game"].nextPlayer == userID){
+        enableCanvas();
+    }
+    else{
+        disableCanvas();
+    }
 });
+
+socket.on("gameover", function (socketID) {
+    endingAnimation();
+});
+
+function endingAnimation(){}
+function drawLine(line){}
+function enableCanvas(){}
+function disableCanvas(){}
