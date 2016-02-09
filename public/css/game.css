@@ -19,7 +19,7 @@ p {
 /* Header */
 .header {
   text-align: center;
-  /*background: url(../img/bgredes1.png) no-repeat center center;*/
+  background: url(../img/bgredes1.png) no-repeat center center;
   background-size: cover;
   height: 650px;
 }
@@ -42,22 +42,25 @@ p {
   color: #000;
   margin: 5px 0 20px 0;
   font-size: 22px;
-  text-align: left;
 }
 
-.header .a {
-  position: relative;
-  color: #000;
-  margin: 5px 0 20px 0;
+.header .btn {
+  position: left;
+  margin: 30px 1000px 20px 0;
+  background-color: #1c1c1c;
+  color: #fff;
   font-size: 18px;
-  text-align: left;
+  padding: 8px 30px;
+  text-decoration: none;
+  display: inline-block;
+  top: 100px;
 }
 
 /* Infos */
 .infos {
   background-color: #1c1c1c;
   text-align: center;
-  padding: 50px 0 112px;
+  padding: 50px 0 12px;
 }
 
 .infos .coluna {
@@ -85,6 +88,16 @@ p {
   margin-bottom: 20px;
   line-height: 20px;
   font-size: 12px;
+}
+
+a.btn:hover {
+  background:#fff;
+  color:#000;
+}
+
+a.h2:hover {
+  background:#000fcd;
+  color:#000;
 }
 
 /* Media Querie */
