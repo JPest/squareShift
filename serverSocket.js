@@ -2,13 +2,15 @@ var waitingPlayers = [];
 var games = [];
 
 //ServeStatic e connect disponibilizam uma pasta como pública, para a exibição dos htmls
-var connect = require('connect');
 var serveStatic = require('serve-static');
-connect().use(serveStatic("public")).listen(80);
+var express = require('express');
+//connect().use(express.static("public")).listen(80);
 
 //Express é um framework que permite implementar um webServer ao lidar com as requisições HTTP
-var app = require('express')();
+var app = express();
 var server = require('http').Server(app);
+app.use(express.static("public"));
+
 
 //A socket.io gerencia o uso de sockets
 var io = require('socket.io')(server);
@@ -45,5 +47,4 @@ io.on('connection', function (socket) {
 
 });
 
-
-server.listen(3000);
+server.listen(80);
