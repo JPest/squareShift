@@ -11,52 +11,59 @@ app.use(express.static("public"));
 var io = require('socket.io')(server);
 
 io.on('connection', function (socket) {
+
     io.to(socket.id).emit("login", socket.id);
     waitingPlayers.push(socket);
-    
+
+    socket.on('play', function (line) {
+        playHandler(line);
+        var roomName = this.gameRoom;
+        var game = games[roomName];
+        game.addLine(line);
+
+        var data = [];
+        data["line"] = line;
+        data["game"] = game;
+        //io.to(roomName).emit("play", data);
+
+        if (checkGameover()) {
+            //Checar quem ganhou
+            //data = jogador
+            //io.to(roomName).emit("gameover", data);   
+        }
+
+    });
+
+    socket.on('disconnect', function () {
+        io.to(this.room).emit("playerOut", this.id);
+    });
+
     while (waitingPlayers.length >= 3) {
 
         var roomName = "" + (games.length + 1);
 
         var roomPlayers = waitingPlayers.splice(0, 3);
 
+        var newGame = {
+            id: roomName,
+            players: []
+        };
+
         for (player of roomPlayers) {
             player.join(roomName);
+            player.gameRoom = roomName;
+            newGame.players.push(player.id);
         }
 
-        var game = newGame();
-        games[roomName] = game;
-        
-        io.to(roomName).emit("test", game);
+        games[roomName] = newGame;
+
+        io.to(roomName).emit("startGame", newGame);
 
     }
-
-    socket.on('play', function (line) {
-        
-        var roomName = this.rooms[1];
-        var game = games[roomName];
-        game.addLine(line);
-        
-        var data = [];
-        data["line"] = line;
-        data["game"] = game;
-        io.to(roomName).emit("play", data);
-    
-        if (checkGameover()){
-            //Checar quem ganhou
-            //data = jogador
-            //io.to(roomName).emit("gameover", data);   
-        }
-    
-    });
-
-    socket.on('disconnect', function () {
-        //O que será feito caso ele se desconecte.
-    });
 
 });
 
 server.listen(80);
 
-function newGame(){}
-function checkGameover(){}
+
+function checkGameover() {}
