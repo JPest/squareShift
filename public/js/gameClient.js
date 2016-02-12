@@ -1,4 +1,4 @@
-Objetos do Game
+/*Objetos do Game
 var game {
     squares:[],//Quadrados aqui
     filledSquareCount:0,
@@ -37,20 +37,75 @@ function Square(){
     this.color = "";
     this.points =[];// Pontos aqui
     this.lines = [];// Linhas aqui
-};
+};*/
 
 //Canvas
-var c = document.getElementById("myCanvas");
-var ctx = c.getContext("2d");
+var canvas = document.getElementById("myCanvas");
+// Cria o Canvas com id = myCanvas
+var stage = new createjs.Stage("myCanvas");
 
-var x = 250;
-var y = 70;
+createjs.Ticker.addEventListener("tick", stage);
 
-        
-    for(x=250;x<=850;x+=100){ 
-        for(y=70;y<=560;y+=70){
-            ctx.beginPath();
-            ctx.arc(x,y,5,0,2*Math.PI);
-            ctx.fill();
-        } 
+//habilita o mouseover no stage
+stage.enableMouseOver(20);
+
+var connection = null;
+
+var i=0;
+var j=0;
+
+for(i=250;i<=850;i+=100){ 
+    for(j=70;j<=560;j+=70){
+        var circle = new createjs.Shape().set({
+        x: i,
+        y: j,
+        cursor: "pointer",
+        name:"target",
+    });
+    circle.graphics.f(createjs.Graphics.getRGB("fff"))
+        .dc(0,0,6);
+    stage.addChild(circle);
+    circle.on("mousedown", mousePress);
+    } 
+}
+
+function mousePress(event) {
+    connection = new createjs.Shape().set({
+        x:event.target.x, 
+        y:event.target.y,
+        mouseEnabled:false,
+        graphics: new createjs.Graphics().s("#00f").dc(0,0,50)
+    });
+    stage.addChild(connection);
+    stage.addEventListener("stagemousemove", desenhaLinha);
+    stage.addEventListener("stagemouseup", fimLinha);
+}
+
+function desenhaLinha(event) {
+    connection.graphics.clear()
+        .s("#f00")
+        .mt(0,0).lt(stage.mouseX-connection.x, stage.mouseY-connection.y);
+}
+
+function fimLinha() {
+    var target, targets = stage.getObjectsUnderPoint(stage.mouseX, stage.mouseY);
+    console.log(targets);
+    for (var i=0; i<targets.length; i++) {
+        if (targets[i].name == "target") { target = targets[i]; break; }   
     }
+    
+    if (target != null) {
+        connection.graphics.clear()
+        .s("red")
+        .mt(0,0).lt(target.x-connection.x, target.y-connection.y);
+    } else {
+        stage.removeChild(connection);
+    }
+    
+    stage.removeEventListener("stagemousemove", desenhaLinha);
+    stage.removeEventListener("stagemouseup", fimLinha);
+}
+
+function tick(event) {
+    stage.update();
+}
