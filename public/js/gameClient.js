@@ -1,5 +1,5 @@
-/*Objetos do Game
-var game {
+//Objetos do Game
+var game = {
     squares:[],//Quadrados aqui
     filledSquareCount:0,
     roundPlayer:[],//Jogadores aqui
@@ -11,7 +11,7 @@ var game {
                         }else{
                             return false;
                         }
-                    },    
+                    }    
         
 };
 
@@ -37,7 +37,7 @@ function Square(){
     this.color = "";
     this.points =[];// Pontos aqui
     this.lines = [];// Linhas aqui
-};*/
+};
 
 //Canvas
 var canvas = document.getElementById("myCanvas");
@@ -54,8 +54,10 @@ var connection = null;
 var i=0;
 var j=0;
 
+var myPoints = [] ;
+
 for(i=250;i<=850;i+=100){ 
-    for(j=70;j<=560;j+=70){
+    for(j=70;j<=560;j+=100){
         var circle = new createjs.Shape().set({
         x: i,
         y: j,
@@ -66,6 +68,8 @@ for(i=250;i<=850;i+=100){
         .dc(0,0,6);
     stage.addChild(circle);
     circle.on("mousedown", mousePress);
+    var new_point = new Point(i,j);
+    myPoints.push(new_point);
     } 
 }
 
@@ -91,13 +95,18 @@ function fimLinha() {
     var target, targets = stage.getObjectsUnderPoint(stage.mouseX, stage.mouseY);
     console.log(targets);
     for (var i=0; i<targets.length; i++) {
-        if (targets[i].name == "target") { target = targets[i]; break; }   
+        if (targets[i].name == "target") { 
+            target = targets[i];
+            console.log("te amo"); 
+            break; 
+        }   
     }
     
     if (target != null) {
         connection.graphics.clear()
         .s("red")
         .mt(0,0).lt(target.x-connection.x, target.y-connection.y);
+        
     } else {
         stage.removeChild(connection);
     }
