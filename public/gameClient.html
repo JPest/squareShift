@@ -4,10 +4,9 @@
 		<meta charset="UTF-8">
 		<title>Projeto Final de Redes - 2015.2</title>
 		<link href='https://fonts.googleapis.com/css?family=Oswald:400,700' rel='stylesheet' type='text/css'>
-	    <link rel="stylesheet" type="text/css" href="css/index.css">
-	    <script src="/socket.io/socket.io.js"></script>
-	    <script src="js/clientSocket.js"></script>
 	    <link rel="stylesheet" type="text/css" href="css/game.css">
+        <script src="lib/easeljs-0.8.2.min.js"></script>
+	
 	</head>
 
 	<body>
@@ -15,220 +14,11 @@
 		<div class="header">
 			<div class="container">
 				<a class="btn" href="index.html">Inicio</a>
+               
 			</div>
+            
 			<canvas id="myCanvas" width="1200" height="530" style="border:5px solid #000000;"></canvas>
 		</div>
-
-        <!-- Testes -->
-		<script>
-			var c = document.getElementById("myCanvas");
-            var ctx = c.getContext("2d");
-            
-            /* 1º Coluna */
-            ctx.beginPath();
-            ctx.arc(250,50,5,0,2*Math.PI);
-            ctx.stroke();
-            
-            ctx.beginPath();
-            ctx.arc(250,120,5,0,2*Math.PI);
-            ctx.stroke();
-            
-            ctx.beginPath();
-            ctx.arc(250,190,5,0,2*Math.PI);
-            ctx.stroke();
-            
-            ctx.beginPath();
-            ctx.arc(250,260,5,0,2*Math.PI);
-            ctx.stroke();
-            
-            ctx.beginPath();
-            ctx.arc(250,330,5,0,2*Math.PI);
-            ctx.stroke();
-            
-            ctx.beginPath();
-            ctx.arc(250,400,5,0,2*Math.PI);
-            ctx.stroke();
-            
-            ctx.beginPath();
-            ctx.arc(250,470,5,0,2*Math.PI);
-            ctx.stroke();
-            
-            /* 2º Coluna */
-            ctx.beginPath();
-            ctx.arc(350,50,5,0,2*Math.PI);
-            ctx.stroke();
-            
-            ctx.beginPath();
-            ctx.arc(350,120,5,0,2*Math.PI);
-            ctx.stroke();
-            
-            ctx.beginPath();
-            ctx.arc(350,190,5,0,2*Math.PI);
-            ctx.stroke();
-            
-            ctx.beginPath();
-            ctx.arc(350,260,5,0,2*Math.PI);
-            ctx.stroke();
-            
-            ctx.beginPath();
-            ctx.arc(350,330,5,0,2*Math.PI);
-            ctx.stroke();
-            
-            ctx.beginPath();
-            ctx.arc(350,400,5,0,2*Math.PI);
-            ctx.stroke();
-            
-            ctx.beginPath();
-            ctx.arc(350,470,5,0,2*Math.PI);
-            ctx.stroke();
-            
-            /* 3º Coluna */
-            ctx.beginPath();
-            ctx.arc(450,50,5,0,2*Math.PI);
-            ctx.stroke();
-            
-            ctx.beginPath();
-            ctx.arc(450,120,5,0,2*Math.PI);
-            ctx.stroke();
-            
-            ctx.beginPath();
-            ctx.arc(450,190,5,0,2*Math.PI);
-            ctx.stroke();
-            
-            ctx.beginPath();
-            ctx.arc(450,260,5,0,2*Math.PI);
-            ctx.stroke();
-            
-            ctx.beginPath();
-            ctx.arc(450,330,5,0,2*Math.PI);
-            ctx.stroke();
-            
-            ctx.beginPath();
-            ctx.arc(450,400,5,0,2*Math.PI);
-            ctx.stroke();
-            
-            ctx.beginPath();
-            ctx.arc(450,470,5,0,2*Math.PI);
-            ctx.stroke();
-            
-            /* 4º Coluna */
-            ctx.beginPath();
-            ctx.arc(550,50,5,0,2*Math.PI);
-            ctx.stroke();
-            
-            ctx.beginPath();
-            ctx.arc(550,120,5,0,2*Math.PI);
-            ctx.stroke();
-            
-            ctx.beginPath();
-            ctx.arc(550,190,5,0,2*Math.PI);
-            ctx.stroke();
-            
-            ctx.beginPath();
-            ctx.arc(550,260,5,0,2*Math.PI);
-            ctx.stroke();
-            
-            ctx.beginPath();
-            ctx.arc(550,330,5,0,2*Math.PI);
-            ctx.stroke();
-            
-            ctx.beginPath();
-            ctx.arc(550,400,5,0,2*Math.PI);
-            ctx.stroke();
-            
-            ctx.beginPath();
-            ctx.arc(550,470,5,0,2*Math.PI);
-            ctx.stroke();
-            
-            /* 5º Coluna */
-            ctx.beginPath();
-            ctx.arc(650,50,5,0,2*Math.PI);
-            ctx.stroke();
-            
-            ctx.beginPath();
-            ctx.arc(650,120,5,0,2*Math.PI);
-            ctx.stroke();
-            
-            ctx.beginPath();
-            ctx.arc(650,190,5,0,2*Math.PI);
-            ctx.stroke();
-            
-            ctx.beginPath();
-            ctx.arc(650,260,5,0,2*Math.PI);
-            ctx.stroke();
-            
-            ctx.beginPath();
-            ctx.arc(650,330,5,0,2*Math.PI);
-            ctx.stroke();
-            
-            ctx.beginPath();
-            ctx.arc(650,400,5,0,2*Math.PI);
-            ctx.stroke();
-            
-            ctx.beginPath();
-            ctx.arc(650,470,5,0,2*Math.PI);
-            ctx.stroke();
-            
-            /* 6º Coluna */
-            ctx.beginPath();
-            ctx.arc(750,50,5,0,2*Math.PI);
-            ctx.stroke();
-            
-            ctx.beginPath();
-            ctx.arc(750,120,5,0,2*Math.PI);
-            ctx.stroke();
-            
-            ctx.beginPath();
-            ctx.arc(750,190,5,0,2*Math.PI);
-            ctx.stroke();
-            
-            ctx.beginPath();
-            ctx.arc(750,260,5,0,2*Math.PI);
-            ctx.stroke();
-            
-            ctx.beginPath();
-            ctx.arc(750,330,5,0,2*Math.PI);
-            ctx.stroke();
-            
-            ctx.beginPath();
-            ctx.arc(750,400,5,0,2*Math.PI);
-            ctx.stroke();
-            
-            ctx.beginPath();
-            ctx.arc(750,470,5,0,2*Math.PI);
-            ctx.stroke();
-            
-            /* 7º Coluna */
-            ctx.beginPath();
-            ctx.arc(850,50,5,0,2*Math.PI);
-            ctx.stroke();
-            
-            ctx.beginPath();
-            ctx.arc(850,120,5,0,2*Math.PI);
-            ctx.stroke();
-            
-            ctx.beginPath();
-            ctx.arc(850,190,5,0,2*Math.PI);
-            ctx.stroke();
-            
-            ctx.beginPath();
-            ctx.arc(850,260,5,0,2*Math.PI);
-            ctx.stroke();
-            
-            ctx.beginPath();
-            ctx.arc(850,330,5,0,2*Math.PI);
-            ctx.stroke();
-            
-            ctx.beginPath();
-            ctx.arc(850,400,5,0,2*Math.PI);
-            ctx.stroke();
-            
-            ctx.beginPath();
-            ctx.arc(850,470,5,0,2*Math.PI);
-            ctx.stroke();
-
-
-		</script>
 
 		<div class="infos">
 			<div class="container">
@@ -251,8 +41,7 @@
 
 			</div>
 		</div>
-	<script src="lib/easeljs-0.8.2.min.js"></script>
-	<script src="lib/tweenjs-0.6.2.min.js"></script>	
+	   <script src="lib/tweenjs-0.6.2.min.js"></script>	
 	<script src="lib/origami.min.js"></script>
 	<script src="js/gameClient.js"></script>
 	</body>
