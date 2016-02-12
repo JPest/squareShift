@@ -1,8 +1,17 @@
-//Objetos do Game
+Objetos do Game
 var game {
     squares:[],//Quadrados aqui
     filledSquareCount:0,
     roundPlayer:[],//Jogadores aqui
+    validateMove: function (point1, point1){
+                        var a = Math.abs(point1.crdX - point2.crdX);
+                        var b = Math.abs(point1.crdY - point2.crdY);
+                        if( !(a>0 && b>0) ){
+                            return true;
+                        }else{
+                            return false;
+                        }
+                    },    
         
 };
 
