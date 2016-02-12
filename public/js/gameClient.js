@@ -3,13 +3,15 @@ var game = {
     squares:[],//Quadrados aqui
     filledSquareCount:0,
     roundPlayer:[],//Jogadores aqui
-    validateMove: function (point1, point1){
+    validateMove: function (point1, point2){
                         var a = Math.abs(point1.crdX - point2.crdX);
                         var b = Math.abs(point1.crdY - point2.crdY);
-                        if( !(a>0 && b>0) ){
-                            return true;
-                        }else{
+                        if (a>0 && b>0){
                             return false;
+                        }else if(a>100 || b>100){
+                            return false;
+                        }else{
+                            return true;
                         }
                     }    
         
@@ -56,24 +58,37 @@ var j=0;
 
 var myPoints = [] ;
 
-for(i=250;i<=850;i+=100){ 
-    for(j=70;j<=560;j+=100){
-        var circle = new createjs.Shape().set({
-        x: i,
-        y: j,
-        cursor: "pointer",
-        name:"target",
-    });
-    circle.graphics.f(createjs.Graphics.getRGB("fff"))
-        .dc(0,0,6);
-    stage.addChild(circle);
-    circle.on("mousedown", mousePress);
-    var new_point = new Point(i,j);
-    myPoints.push(new_point);
+//j=70;j<=560;j+=100
+//i=250;i<=850;i+=100
+
+
+for(j=70;j<=560;j+=100){
+    var auxX = 0;
+    for(i=250;i<=850;i+=100){
+        var _i = i;
+        var _j = j;
+        
+        (function() {
+            var circle = new createjs.Shape().set({
+                x: _i,
+                y: _j,
+                cursor: "pointer",
+                name:"target"
+
+            });
+            circle.graphics.f(createjs.Graphics.getRGB("fff"))
+                .dc(0,0,6);
+            stage.addChild(circle);
+            var new_point = new Point(_i,_j);
+            circle.on("mousedown", function(e) {
+                mousePress(e, new_point);
+            });
+            myPoints.push(new_point);
+        })();
     } 
 }
 
-function mousePress(event) {
+function mousePress(event, point) {
     connection = new createjs.Shape().set({
         x:event.target.x, 
         y:event.target.y,
@@ -82,7 +97,12 @@ function mousePress(event) {
     });
     stage.addChild(connection);
     stage.addEventListener("stagemousemove", desenhaLinha);
-    stage.addEventListener("stagemouseup", fimLinha);
+    stage.addEventListener("stagemouseup", mouse_point_getter);
+                           
+    function mouse_point_getter(e) {
+        fimLinha(e, point);
+        stage.removeEventListener("stagemouseup", mouse_point_getter);
+    }
 }
 
 function desenhaLinha(event) {
@@ -91,9 +111,8 @@ function desenhaLinha(event) {
         .mt(0,0).lt(stage.mouseX-connection.x, stage.mouseY-connection.y);
 }
 
-function fimLinha() {
+function fimLinha(event, first_point) {
     var target, targets = stage.getObjectsUnderPoint(stage.mouseX, stage.mouseY);
-    console.log(targets);
     for (var i=0; i<targets.length; i++) {
         if (targets[i].name == "target") { 
             target = targets[i];
@@ -102,7 +121,15 @@ function fimLinha() {
         }   
     }
     
-    if (target != null) {
+    var last_point;
+    if(target) {
+        myPoints.filter(function(el) {
+            if(el.crdX == target.x && el.crdY == target.y)
+                last_point = el;
+        });
+    }
+    
+    if (target != null && game.validateMove(first_point, last_point)) {
         connection.graphics.clear()
         .s("red")
         .mt(0,0).lt(target.x-connection.x, target.y-connection.y);
@@ -112,7 +139,7 @@ function fimLinha() {
     }
     
     stage.removeEventListener("stagemousemove", desenhaLinha);
-    stage.removeEventListener("stagemouseup", fimLinha);
+    
 }
 
 function tick(event) {
