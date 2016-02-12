@@ -1,5 +1,5 @@
 //Objetos do Game
-var game{
+var game {
     squares:[],//Quadrados aqui
     filledSquareCount:0,
     roundPlayer:[],//Jogadores aqui
@@ -23,11 +23,11 @@ function Line(point1,point2){
     this.ponint2 = point2;
 };
 
-function Square(ln1, ln2, ln3, l4, pnt1, pnt2, pnt3, pnt4){
+function Square(){
     this.filled = false;
     this.color = "";
-    this.points =[pnt1, pnt2, pnt3, pnt4];
-    this.lines = [ln1, ln2, ln3, l4];
+    this.points =[];// Pontos aqui
+    this.lines = [];// Linhas aqui
 };
 
 //Canvas
