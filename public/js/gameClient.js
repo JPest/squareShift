@@ -152,9 +152,8 @@ function fimLinha(event, first_point) {
     }
 
     if (target != null && game.validateMove(first_point, last_point)) {
-        connection.graphics.clear()
-            .s("red")
-            .mt(0, 0).lt(target.x - connection.x, target.y - connection.y);
+        connection.graphics.clear().s("red").mt(0, 0).lt(target.x - connection.x, target.y - connection.y);
+
         var line = {
             ponint1: first_point,
             ponint2: last_point
@@ -162,12 +161,24 @@ function fimLinha(event, first_point) {
 
         game.lines.push(line);
 
+        socket.emit("play", line);
+
     } else {
         stage.removeChild(connection);
     }
 
     stage.removeEventListener("stagemousemove", desenhaLinha);
 
+}
+
+function drawLine(line) {
+    var connection = new createjs.Shape();
+    stage.addChild(connection);
+    connection.graphics.clear();
+    connection.graphics.setStrokeStyle(3);
+    connection.graphics.beginStroke("#ff3333");
+    connection.graphics.moveTo(line.ponint1.crdX, line.ponint1.crdY);
+    connection.graphics.lineTo(line.ponint2.crdX, line.ponint2.crdY);
 }
 
 function tick(event) {

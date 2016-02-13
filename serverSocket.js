@@ -16,15 +16,10 @@ io.on('connection', function (socket) {
     waitingPlayers.push(socket);
 
     socket.on('play', function (line) {
-        playHandler(line);
         var roomName = this.gameRoom;
         var game = games[roomName];
-        game.addLine(line);
 
-        var data = [];
-        data["line"] = line;
-        data["game"] = game;
-        //io.to(roomName).emit("play", data);
+        io.to(roomName).emit("play", line);
 
         if (checkGameover()) {
             //Checar quem ganhou

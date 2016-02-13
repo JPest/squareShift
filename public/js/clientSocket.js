@@ -3,7 +3,6 @@ var userID = "";
 
 socket.on("login", function (socketID) {
     userID = socketID;
-    alert("Conexão estabelecida.\nSeu id: " + userID);
 });
 
 socket.on("startGame", function (game) {
@@ -24,14 +23,16 @@ socket.on("startGame", function (game) {
     }
 });
 
-socket.on("play", function (data) {
-    drawLine(data["line"]);
+socket.on("play", function (line) {
+
+    drawLine(line);
+    /*drawLine(data["line"]);
 
     if (data["game"].nextPlayer == userID) {
         enableCanvas();
     } else {
         disableCanvas();
-    }
+    }*/
 });
 
 socket.on("gameover", function (socketID) {
