@@ -5,34 +5,28 @@ socket.on("login", function (socketID) {
     userID = socketID;
 });
 
-socket.on("startGame", function (game) {
+socket.on("startGame", function (serverGame) {
+    game = serverGame;
     introAnimation();
-    var string = "3 jogadores entraram, o jogo irá iniciar.\n";
-    var count = 1;
-    for (player of game.players) {
-        string += "Jogador " + count + ": " + player + "\n";
-        count++;
-    }
 
-    alert(string);
-
-    if (game.nextPlayer == userID) {
-        enableCanvas();
+    if (game.roundPlayer == userID) {
+        alert("sua vez");
+        canvas.style.pointerEvents = "auto";
     } else {
-        disableCanvas();
+        canvas.style.pointerEvents = "none";
     }
 });
 
-socket.on("play", function (line) {
+socket.on("play", function (data) {
 
-    drawLine(line);
-    /*drawLine(data["line"]);
+    drawLine(data.line);
 
-    if (data["game"].nextPlayer == userID) {
-        enableCanvas();
+    if (data.game.roundPlayer == userID) {
+        alert("sua vez");
+        canvas.style.pointerEvents = "auto";
     } else {
-        disableCanvas();
-    }*/
+        canvas.style.pointerEvents = "none";
+    }
 });
 
 socket.on("gameover", function (socketID) {
@@ -46,9 +40,5 @@ socket.on("playerOut", function (socketID) {
 function endingAnimation() {}
 
 function drawLine(line) {}
-
-function enableCanvas() {}
-
-function disableCanvas() {}
 
 function introAnimation() {}

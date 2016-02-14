@@ -16,16 +16,37 @@ io.on('connection', function (socket) {
     waitingPlayers.push(socket);
 
     socket.on('play', function (line) {
+
+        var data = [];
         var roomName = this.gameRoom;
         var game = games[roomName];
 
-        io.to(roomName).emit("play", line);
+
+        if (!checkFilledSquare()) {
+
+            if (game.roundPlayerIndex >= game.players.length - 1) {
+                game.roundPlayerIndex = 0;
+            } else {
+                game.roundPlayerIndex++;
+            }
+
+            game.roundPlayer = game.players[game.roundPlayerIndex];
+
+        }
 
         if (checkGameover()) {
             //Checar quem ganhou
             //data = jogador
             //io.to(roomName).emit("gameover", data);   
         }
+
+        data["game"] = game;
+        data["line"] = line;
+
+        io.to(roomName).emit("play", {
+            game: game,
+            line: line
+        });
 
     });
 
@@ -39,16 +60,16 @@ io.on('connection', function (socket) {
 
         var roomPlayers = waitingPlayers.splice(0, 3);
 
-        var newGame = {
-            id: roomName,
-            players: []
-        };
+        var newGame = createNewGame();
+        newGame.id = roomName;
 
         for (player of roomPlayers) {
             player.join(roomName);
             player.gameRoom = roomName;
             newGame.players.push(player.id);
         }
+
+        newGame.roundPlayer = newGame.players[newGame.roundPlayerIndex];
 
         games[roomName] = newGame;
 
@@ -60,5 +81,23 @@ io.on('connection', function (socket) {
 
 server.listen(80);
 
+function createNewGame() {
+
+    return {
+        squares: [], //Quadrados aqui
+        lines: [],
+        points: [],
+        filledSquareCount: 0,
+        players: [], //Jogadores aqui
+        roundPlayer: "none",
+        roundPlayerIndex: 0
+    };
+
+}
+
 
 function checkGameover() {}
+
+function checkFilledSquare() {
+    return false;
+}
