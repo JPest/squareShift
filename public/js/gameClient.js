@@ -10,9 +10,15 @@ function validateMove(point1, point2) {
     var a = Math.abs(point1.crdX - point2.crdX);
     var b = Math.abs(point1.crdY - point2.crdY);
 
-    if (getLine(point1, point2) != undefined) {
-        return false;
+    for (line of game.lines) {
+        if (line.ponint1.crdX == point1.crdX && line.ponint1.crdY == point1.crdY &&
+            line.ponint2.crdX == point2.crdX && line.ponint2.crdY == point2.crdY) {
+
+            return false;
+
+        }
     }
+
 
     if (a > 0 && b > 0) {
         return false;
@@ -106,7 +112,10 @@ function fimLinha(event, first_point) {
 
     var last_point;
     if (target) {
-        getPoint(target.x, target.y);
+        game.points.filter(function (el) {
+            if (el.crdX == target.x && el.crdY == target.y)
+                last_point = el;
+        });
     }
 
     if (target != null && validateMove(first_point, last_point)) {
@@ -148,30 +157,4 @@ function drawLine(line) {
 
 function tick(event) {
     stage.update();
-}
-
-function getPoint(x, y) {
-
-    game.points.filter(function (el) {
-        if (el.crdX == x && el.crdY == y)
-            return last_point = el;
-    });
-
-    return undefined;
-
-}
-
-function getLine(point1, point2) {
-    for (line of game.lines) {
-        if ((line.ponint1.crdX == point1.crdX && line.ponint1.crdY == point1.crdY &&
-                line.ponint2.crdX == point2.crdX && line.ponint2.crdY == point2.crdY) ||
-
-            (line.ponint1.crdX == point2.crdX && line.ponint1.crdY == point2.crdY &&
-                line.ponint2.crdX == point1.crdX && line.ponint2.crdY == point1.crdY)
-        ) {
-            return line;
-        } else {
-            return undefined;
-        }
-    }
 }

@@ -19,15 +19,15 @@ p {
 /* Header */
 .header {
   text-align: center;
-  /*background: url(../img/bgredes1.png) no-repeat center center;*/
+  background: url(../img/bgredes1.png) no-repeat center center;*/
   background-size: cover;
   height: 650px;
 }
 
-/*.header .container {
-  position: relative;
-  margin-left: 100px;
-}*/
+.header .container {
+  background-color: #fff;
+  padding: 50px 20px 53px 40px;
+}
 
 .header h1 {
   position: relative;
@@ -40,7 +40,7 @@ p {
 .header p {
   position: relative;
   color: #000;
-  margin: 5px 0 20px 0;
+  margin: 25px 0 20px 0;
   font-size: 28px;
   text-align: left;
 }
