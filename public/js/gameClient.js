@@ -58,6 +58,7 @@ function Square() {
 var canvas = document.getElementById("myCanvas");
 // Cria o Canvas com id = myCanvas
 var stage = new createjs.Stage("myCanvas");
+createjs.Touch.enable(stage);
 
 createjs.Ticker.addEventListener("tick", stage);
 
@@ -82,15 +83,22 @@ for (j = 70; j <= 560; j += 100) {
         var _j = j;
 
         (function () {
-            var circle = new createjs.Shape().set({
-                x: _i,
-                y: _j,
-                cursor: "pointer",
-                name: "target"
+            var circle = new createjs.Shape();
+            circle.cursor = "pointer";
+            circle.name = "target";
+            circle.graphics.beginFill("#000").drawCircle(0, 0, 6);
+            circle.x = _i;
+            circle.y = _j;
 
+            var hitArea = new createjs.Shape();
+            hitArea.graphics.beginFill("#000").drawCircle(0, 0, 30);
+            circle.hitArea = hitArea;
+
+
+            circle.on("mousedown", function (e) {
+                mousePress(e, new_point);
             });
-            circle.graphics.f(createjs.Graphics.getRGB("fff"))
-                .dc(0, 0, 6);
+
             stage.addChild(circle);
 
             circle.scaleX = 0;
@@ -102,9 +110,9 @@ for (j = 70; j <= 560; j += 100) {
             pointTime += 50;
 
             var new_point = new Point(_i, _j);
-            circle.on("mousedown", function (e) {
-                mousePress(e, new_point);
-            });
+
+
+
             myPoints.push(new_point);
         })();
     }
@@ -179,6 +187,13 @@ function drawLine(line) {
     connection.graphics.beginStroke("#ff3333");
     connection.graphics.moveTo(line.ponint1.crdX, line.ponint1.crdY);
     connection.graphics.lineTo(line.ponint2.crdX, line.ponint2.crdY);
+
+    connection.alpha = 0;
+
+    createjs.Tween.get(connection).to({
+        alpha: 1
+    }, 500);
+
 }
 
 function tick(event) {
