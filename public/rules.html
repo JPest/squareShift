@@ -5,6 +5,7 @@
 		<title>Projeto Final de Redes - 2015.2</title>
 		<link href='https://fonts.googleapis.com/css?family=Oswald:400,700' rel='stylesheet' type='text/css'>
 	    <link rel="stylesheet" type="text/css" href="css/rules.css">
+        <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
 	</head>
 
 	<body>
@@ -48,6 +49,15 @@
 
 			</div>
 		</div>
+        
+        <script>
+            $(function(){
+                $(".container").hide();
+                window.onload = (function(){           
+                    $(".container").fadeIn("slow");
+                });
+            });
+        </script>
 		
 	</body>
 </html>
