@@ -51,6 +51,10 @@ io.on('connection', function (socket) {
     });
 
     socket.on('disconnect', function () {
+        var index = waitingPlayers.indexOf(this);
+        if (index >= 0) {
+            waitingPlayers.pop(index);
+        }
         io.to(this.room).emit("playerOut", this.id);
     });
 

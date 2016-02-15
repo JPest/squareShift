@@ -1,10 +1,64 @@
 var connection = undefined;
 var game = undefined;
+var loadingContainer = new createjs.Container();
+//var loadingContainer = createjs.Container();
 
 //Canvas
 var canvas = document.getElementById("myCanvas");
 // Cria o stage com id = myCanvas
 var stage = new createjs.Stage("myCanvas");
+
+createjs.Touch.enable(stage);
+
+createjs.Ticker.addEventListener("tick", stage);
+
+var text = new createjs.Text("Aguardando jogadores...", "15px Arial", "#000000");
+text.regX = text.width / 2;
+text.regY = text.height / 2;
+text.x = canvas.width / 2 - 90;
+text.y = canvas.height / 2;
+text.textBaseline = "alphabetic";
+
+createjs.Tween.get(text, {
+    loop: true
+}).to({
+    text: "Aguardando jogadores..."
+}, 500);
+
+stage.addChild(loadingContainer);
+loadingContainer.addChild(text);
+var pointTime = 100;
+for (j = 170; j <= 370; j += 200) {
+    var auxX = 0;
+    for (i = 500; i <= 700; i += 200) {
+
+        var circle = new createjs.Shape();
+        circle.cursor = "pointer";
+        circle.name = "target";
+        circle.graphics.beginFill("#000").drawCircle(0, 0, 6);
+        circle.x = i;
+        circle.y = j;
+
+        circle.on("mousedown", function (e) {
+            mousePress(e, new_point);
+        });
+
+        loadingContainer.addChild(circle);
+
+        circle.scaleX = 0;
+        circle.scaleY = 0;
+        createjs.Tween.get(circle, {
+            loop: true
+        }).wait(pointTime).to({
+            scaleX: 1,
+            scaleY: 1
+        }, 1000, createjs.Ease.elasticOut).to({
+            scaleX: 0,
+            scaleY: 0
+        }, 1000);
+        pointTime += 100;
+    }
+}
 
 function validateMove(point1, point2) {
     var a = Math.abs(point1.crdX - point2.crdX);
@@ -30,18 +84,20 @@ function validateMove(point1, point2) {
 }
 
 function introAnimation() {
-    createjs.Touch.enable(stage);
-
-    createjs.Ticker.addEventListener("tick", stage);
 
     //habilita o mouseover no stage
+    createjs.Tween.get(loadingContainer).to({
+        alpha: 0
+    }, 500).call(function () {
+        stage.removeChild(loadingContainer);
+    });
     stage.enableMouseOver(20);
 
 
     var pointTime = 50;
     for (j = 70; j <= 560; j += 100) {
         var auxX = 0;
-        for (i = 250; i <= 850; i += 100) {
+        for (i = 300; i <= 900; i += 100) {
 
             (function () {
                 var circle = new createjs.Shape();
