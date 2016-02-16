@@ -204,7 +204,7 @@ function createSquares(points, lines) {
     var squares = [];
     var squareLineArray = [];
     auxY = 0;
-    for (i = 0; i < points.length - 1; i++) {
+    for (i = 0; i < points.length - 2; i++) {
         var auxX = 0;
         for (j = 0; j < points[i].length - 1; j++) {
 
