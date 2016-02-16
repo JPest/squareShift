@@ -67,28 +67,30 @@ io.on('connection', function (socket) {
         if (game) {
             var outPlayer = undefined;
             for (player of game.players) {
-                if (player.id == socket.id) {
-                    outPlayer = game.players.pop(player);
-                }
+                if (player.id == this.id) {
+                    outPlayer = game.players.splice(game.players.indexOf(player), 1);
+                    if (game.roundPlayer = outPlayer) {
 
-                if (game.roundPlayer = outPlayer) {
+                        if (game.roundPlayerIndex >= game.players.length - 1) {
+                            game.roundPlayerIndex = 0;
+                        } else {
+                            game.roundPlayerIndex++;
+                        }
 
-                    if (game.roundPlayerIndex >= game.players.length - 1) {
-                        game.roundPlayerIndex = 0;
-                    } else {
-                        game.roundPlayerIndex++;
+                        game.roundPlayer = game.players[game.roundPlayerIndex];
+
                     }
-
-                    game.roundPlayer = game.players[game.roundPlayerIndex];
-
+                    break;
                 }
+
+
 
 
             }
 
             io.to(this.gameRoom).emit("playerOut", {
                 game: game,
-                player: outPlayer
+                player: outPlayer[0].color
             });
         }
 
@@ -161,9 +163,9 @@ function createPoints() {
     var points = []
     var lineArray = [];
     auxY = 0;
-    for (j = 70; j <= 560; j += 100) {
+    for (j = 50; j <= 550; j += 100) {
         var auxX = 0;
-        for (i = 300; i <= 900; i += 100) {
+        for (i = 400; i <= 1000; i += 100) {
             var new_point = new Point(i, j);
             new_point.matrixX = auxX;
             new_point.matrixY = auxY;

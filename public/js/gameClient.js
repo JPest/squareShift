@@ -3,6 +3,16 @@ var game = undefined;
 var loadingContainer = new createjs.Container();
 var mouseDownTarget;
 
+var playerAvatar1 = new createjs.Shape();
+var playerAvatar2 = new createjs.Shape();
+var playerAvatar3 = new createjs.Shape();
+var playerScore1 = new createjs.Text("0", "35px Arial", "#ffffff");
+var playerScore2 = new createjs.Text("0", "35px Arial", "#ffffff");
+var playerScore3 = new createjs.Text("0", "35px Arial", "#ffffff");
+
+
+
+
 //Canvas
 var canvas = document.getElementById("myCanvas");
 // Cria o stage com id = myCanvas
@@ -29,7 +39,7 @@ function createLoadingScreen() {
     var text = new createjs.Text("Aguardando jogadores...", "15px Arial", "#000000");
     text.regX = text.width / 2;
     text.regY = text.height / 2;
-    text.x = canvas.width / 2 - 90;
+    text.x = canvas.width / 2 + 25;
     text.y = canvas.height / 2;
     text.textBaseline = "alphabetic";
 
@@ -44,7 +54,7 @@ function createLoadingScreen() {
     var pointTime = 100;
     for (j = 170; j <= 370; j += 200) {
         var auxX = 0;
-        for (i = 500; i <= 700; i += 200) {
+        for (i = 600; i <= 800; i += 200) {
 
             var circle = new createjs.Shape();
             circle.cursor = "pointer";
@@ -118,7 +128,7 @@ function introAnimation() {
             circle.y = point.y;
 
             var hitArea = new createjs.Shape();
-            hitArea.graphics.beginFill("#000").drawCircle(0, 0, 50);
+            hitArea.graphics.beginFill("#000").drawCircle(0, 0, 45);
             circle.hitArea = hitArea;
 
             pointContainer.addChild(circle);
@@ -170,7 +180,7 @@ function fimLinha(event) {
     stage.removeEventListener("stagemousemove");
     lineContainer.removeChild(connection);
 
-    first_point = game.points[(mouseDownTarget.y - 70) / 100][(mouseDownTarget.x - 300) / 100]
+    first_point = game.points[(mouseDownTarget.y - 50) / 100][(mouseDownTarget.x - 400) / 100]
 
     var target, targets = stage.getObjectsUnderPoint(stage.mouseX, stage.mouseY);
     for (var i = 0; i < targets.length; i++) {
@@ -182,7 +192,7 @@ function fimLinha(event) {
 
     var last_point;
     if (target) {
-        last_point = game.points[(target.y - 70) / 100][(target.x - 300) / 100];
+        last_point = game.points[(target.y - 50) / 100][(target.x - 400) / 100];
     }
 
     if (target != null && validateMove(first_point, last_point)) {
@@ -231,58 +241,52 @@ function drawSquare(squares, scorePlayer) {
 }
 
 
-function placar(){
+function placar() {
     var ctnPlacar = new createjs.Container();
     ctnPlacar.x = 0;
     ctnPlacar.y = 0;
-    
-    
-    var myRect = new createjs.Shape();
-    myRect.graphics.beginFill("DeepSkyBlue").drawRect(0, 0, 500,100);
-    myRect.width = myRect.graphics.command.w;
-    myRect.height = myRect.graphics.command.h;
-    myRect.x = 0;
-    myRect.y = 0;
-    stage.addChild(myRect);
 
 
-    var placarTitulo = new createjs.Text("Placar", "30px Arial", "#000000");
-    placarTitulo.x = myRect.width/2 - 55;
-    placarTitulo.y = 0;
-    ctnPlacar.addChild(placarTitulo);
+    playerAvatar1.graphics.beginFill("red").drawCircle(150, canvas.height * 0.25 + 20, 50);
+    playerAvatar1.regX = 25;
+    playerAvatar1.regY = 25;
+    playerAvatar1.alpha = 0.1;
+    stage.addChild(playerAvatar1);
+    playerScore1.regX = playerScore1.width / 2;
+    playerScore1.regY = playerScore1.height / 2;
+    playerScore1.x = 115;
+    playerScore1.y = canvas.height * 0.25 + 10;
+    playerScore1.textBaseline = "alphabetic";
+    stage.addChild(playerScore1);
 
-    
-    var tituloPlayer01 = new createjs.Text("Player 1", "30px Arial", "#000000");
-    tituloPlayer01.x = 0;
-    tituloPlayer01.y = 0.2*myRect.height;
-    ctnPlacar.addChild(tituloPlayer01);
-    
-    var valorPlayer01 = new createjs.Text(3, "30px Arial", "#000000");
-    valorPlayer01.x = 0;
-    valorPlayer01.y = 0.5*myRect.height;
-    ctnPlacar.addChild(valorPlayer01);
-    
-    var tituloPlayer02 = new createjs.Text("Player 2", "30px Arial", "#000000");
-    tituloPlayer02.x = 0.4*myRect.width;
-    tituloPlayer02.y = 0.2*myRect.height;
-    ctnPlacar.addChild(tituloPlayer02);
-    
-    var valorPlayer02 = new createjs.Text(8, "30px Arial", "#000000");
-    valorPlayer02.x = 0.3*myRect.width;
-    valorPlayer02.y = 0.5*myRect.height;
-    ctnPlacar.addChild(valorPlayer02);
 
-    var tituloPlayer03 = new createjs.Text("Player 3", "30px Arial", "#000000");
-    tituloPlayer03.x = 0;
-    tituloPlayer03.y = 0.2*myRect.height;
-    ctnPlacar.addChild(tituloPlayer03);
-    
-    var valorPlayer03 = new createjs.Text(6, "30px Arial", "#000000");
-    valorPlayer03.x = 0.6*myRect.width;
-    valorPlayer03.y = 0.5*myRect.height;
-    ctnPlacar.addChild(valorPlayer03);
-    
-    stage.addChild(ctnPlacar);
+    playerAvatar2 = new createjs.Shape();
+    playerAvatar2.graphics.beginFill("green").drawCircle(150, canvas.height * 0.5 + 20, 50);
+    playerAvatar2.regX = 25;
+    playerAvatar2.regY = 25;
+    playerAvatar2.alpha = 0.1;
+    stage.addChild(playerAvatar2);
+    playerScore2.regX = playerScore2.width / 2;
+    playerScore2.regY = playerScore2.height / 2;
+    playerScore2.x = 115;
+    playerScore2.y = canvas.height * 0.5 + 10;
+    playerScore2.textBaseline = "alphabetic";
+    stage.addChild(playerScore2);
+
+
+    playerAvatar3 = new createjs.Shape();
+    playerAvatar3.graphics.beginFill("blue").drawCircle(150, canvas.height * 0.75 + 20, 50);
+    playerAvatar3.regX = 25;
+    playerAvatar3.regY = 25;
+    playerAvatar3.alpha = 0.1;
+    stage.addChild(playerAvatar3);
+    playerScore3.regX = playerAvatar3.width / 2;
+    playerScore3.regY = playerAvatar3.height / 2;
+    playerScore3.x = 115;
+    playerScore3.y = canvas.height * 0.75 + 10;
+    playerScore3.textBaseline = "alphabetic";
+    stage.addChild(playerScore3);
+
 }
 
 function tick(event) {
