@@ -1,76 +1,87 @@
-var connection = undefined;
+var connection = new createjs.Shape();
 var game = undefined;
 var loadingContainer = new createjs.Container();
-//var loadingContainer = createjs.Container();
+var mouseDownTarget;
 
 //Canvas
 var canvas = document.getElementById("myCanvas");
 // Cria o stage com id = myCanvas
 var stage = new createjs.Stage("myCanvas");
 
+var lineContainer = new createjs.Container();
+var squareContainer = new createjs.Container();
+var pointContainer = new createjs.Container();
+
+stage.addChild(lineContainer);
+stage.addChild(squareContainer);
+stage.addChild(pointContainer);
+
 createjs.Touch.enable(stage);
 
 createjs.Ticker.addEventListener("tick", stage);
 
-var text = new createjs.Text("Aguardando jogadores...", "15px Arial", "#000000");
-text.regX = text.width / 2;
-text.regY = text.height / 2;
-text.x = canvas.width / 2 - 90;
-text.y = canvas.height / 2;
-text.textBaseline = "alphabetic";
+createLoadingScreen();
 
-createjs.Tween.get(text, {
-    loop: true
-}).to({
-    text: "Aguardando jogadores..."
-}, 500);
+stage.addEventListener("stagemousedown", mousePress);
 
-stage.addChild(loadingContainer);
-loadingContainer.addChild(text);
-var pointTime = 100;
-for (j = 170; j <= 370; j += 200) {
-    var auxX = 0;
-    for (i = 500; i <= 700; i += 200) {
+function createLoadingScreen() {
 
-        var circle = new createjs.Shape();
-        circle.cursor = "pointer";
-        circle.name = "target";
-        circle.graphics.beginFill("#000").drawCircle(0, 0, 6);
-        circle.x = i;
-        circle.y = j;
+    var text = new createjs.Text("Aguardando jogadores...", "15px Arial", "#000000");
+    text.regX = text.width / 2;
+    text.regY = text.height / 2;
+    text.x = canvas.width / 2 - 90;
+    text.y = canvas.height / 2;
+    text.textBaseline = "alphabetic";
 
-        circle.on("mousedown", function (e) {
-            mousePress(e, new_point);
-        });
+    createjs.Tween.get(text, {
+        loop: true
+    }).to({
+        text: "Aguardando jogadores..."
+    }, 500);
 
-        loadingContainer.addChild(circle);
+    stage.addChild(loadingContainer);
+    loadingContainer.addChild(text);
+    var pointTime = 100;
+    for (j = 170; j <= 370; j += 200) {
+        var auxX = 0;
+        for (i = 500; i <= 700; i += 200) {
 
-        circle.scaleX = 0;
-        circle.scaleY = 0;
-        createjs.Tween.get(circle, {
-            loop: true
-        }).wait(pointTime).to({
-            scaleX: 1,
-            scaleY: 1
-        }, 1000, createjs.Ease.elasticOut).to({
-            scaleX: 0,
-            scaleY: 0
-        }, 1000);
-        pointTime += 100;
+            var circle = new createjs.Shape();
+            circle.cursor = "pointer";
+            circle.name = "target";
+            circle.graphics.beginFill("#000").drawCircle(0, 0, 6);
+            circle.x = i;
+            circle.y = j;
+
+            loadingContainer.addChild(circle);
+
+            circle.scaleX = 0;
+            circle.scaleY = 0;
+            createjs.Tween.get(circle, {
+                loop: true
+            }).wait(pointTime).to({
+                scaleX: 1,
+                scaleY: 1
+            }, 1000, createjs.Ease.elasticOut).to({
+                scaleX: 0,
+                scaleY: 0
+            }, 1000);
+            pointTime += 100;
+        }
     }
+
 }
 
 function validateMove(point1, point2) {
-    var a = Math.abs(point1.crdX - point2.crdX);
-    var b = Math.abs(point1.crdY - point2.crdY);
+    var a = Math.abs(point1.x - point2.x);
+    var b = Math.abs(point1.y - point2.y);
 
-    for (line of game.lines) {
-        if (line.ponint1.crdX == point1.crdX && line.ponint1.crdY == point1.crdY &&
-            line.ponint2.crdX == point2.crdX && line.ponint2.crdY == point2.crdY) {
+    var name = lineName(point1, point2);
 
-            return false;
+    if (game.lines[name].filled == true) {
 
-        }
+        return false;
+
     }
 
 
@@ -95,69 +106,72 @@ function introAnimation() {
 
 
     var pointTime = 50;
-    for (j = 70; j <= 560; j += 100) {
-        var auxX = 0;
-        for (i = 300; i <= 900; i += 100) {
+    var lineArray = [];
+    for (lineOfPoints of game.points) {
+        for (point of lineOfPoints) {
 
-            (function () {
-                var circle = new createjs.Shape();
-                circle.cursor = "pointer";
-                circle.name = "target";
-                circle.graphics.beginFill("#000").drawCircle(0, 0, 6);
-                circle.x = i;
-                circle.y = j;
+            var circle = new createjs.Shape();
+            circle.cursor = "pointer";
+            circle.name = "target";
+            circle.graphics.beginFill("#000").drawCircle(0, 0, 6);
+            circle.x = point.x;
+            circle.y = point.y;
 
-                var hitArea = new createjs.Shape();
-                hitArea.graphics.beginFill("#000").drawCircle(0, 0, 30);
-                circle.hitArea = hitArea;
+            var hitArea = new createjs.Shape();
+            hitArea.graphics.beginFill("#000").drawCircle(0, 0, 50);
+            circle.hitArea = hitArea;
 
+            pointContainer.addChild(circle);
 
-                circle.on("mousedown", function (e) {
-                    mousePress(e, new_point);
-                });
+            circle.scaleX = 0;
+            circle.scaleY = 0;
+            createjs.Tween.get(circle).wait(pointTime).to({
+                scaleX: 1,
+                scaleY: 1,
+            }, 1000, createjs.Ease.elasticOut);
+            pointTime += 50;
 
-                stage.addChild(circle);
-
-                circle.scaleX = 0;
-                circle.scaleY = 0;
-                createjs.Tween.get(circle).wait(pointTime).to({
-                    scaleX: 1,
-                    scaleY: 1,
-                }, 1000, createjs.Ease.elasticOut);
-                pointTime += 50;
-
-                var new_point = new Point(i, j);
-
-                game.points.push(new_point);
-            })();
         }
     }
 }
 
-function mousePress(event, point) {
-    connection = new createjs.Shape().set({
-        x: event.target.x,
-        y: event.target.y,
-        mouseEnabled: false,
-        graphics: new createjs.Graphics().s("#00f").dc(0, 0, 50)
-    });
-    stage.addChild(connection);
-    stage.addEventListener("stagemousemove", desenhaLinha);
-    stage.addEventListener("stagemouseup", mouse_point_getter);
+function mousePress(event) {
 
-    function mouse_point_getter(e) {
-        fimLinha(e, point);
-        stage.removeEventListener("stagemouseup", mouse_point_getter);
+    var targets = stage.getObjectsUnderPoint(stage.mouseX, stage.mouseY);
+    for (var i = 0; i < targets.length; i++) {
+        if (targets[i].name == "target") {
+            mouseDownTarget = targets[i];
+            break;
+        }
+    }
+
+    if (mouseDownTarget) {
+
+        connection = new createjs.Shape().set({
+            x: mouseDownTarget.x,
+            y: mouseDownTarget.y,
+            mouseEnabled: false
+        });
+        lineContainer.addChild(connection);
+        stage.addEventListener("stagemousemove", desenhaLinha);
+        stage.addEventListener("stagemouseup", fimLinha);
     }
 }
 
 function desenhaLinha(event) {
     connection.graphics.clear()
-        .s("#f00")
+        .s(player.color)
         .mt(0, 0).lt(stage.mouseX - connection.x, stage.mouseY - connection.y);
 }
 
-function fimLinha(event, first_point) {
+function fimLinha(event) {
+
+    stage.removeEventListener("stagemouseup");
+    stage.removeEventListener("stagemousemove");
+    lineContainer.removeChild(connection);
+
+    first_point = game.points[(mouseDownTarget.y - 70) / 100][(mouseDownTarget.x - 300) / 100]
+
     var target, targets = stage.getObjectsUnderPoint(stage.mouseX, stage.mouseY);
     for (var i = 0; i < targets.length; i++) {
         if (targets[i].name == "target") {
@@ -168,46 +182,51 @@ function fimLinha(event, first_point) {
 
     var last_point;
     if (target) {
-        game.points.filter(function (el) {
-            if (el.crdX == target.x && el.crdY == target.y)
-                last_point = el;
-        });
+        last_point = game.points[(target.y - 70) / 100][(target.x - 300) / 100];
     }
 
     if (target != null && validateMove(first_point, last_point)) {
-        connection.graphics.clear().s("red").mt(0, 0).lt(target.x - connection.x, target.y - connection.y);
 
-        var line = {
-            ponint1: first_point,
-            ponint2: last_point
-        };
-
-        game.lines.push(line);
+        var line = game.lines[lineName(first_point, last_point)];
+        line.filled = true;
+        line.color = player.color;
 
         socket.emit("play", line);
 
-    } else {
-        stage.removeChild(connection);
     }
 
-    stage.removeEventListener("stagemousemove", desenhaLinha);
 
 }
 
 function drawLine(line) {
-    var connection = new createjs.Shape();
-    stage.addChild(connection);
-    connection.graphics.clear();
-    connection.graphics.setStrokeStyle(3);
-    connection.graphics.beginStroke("#ff3333");
-    connection.graphics.moveTo(line.ponint1.crdX, line.ponint1.crdY);
-    connection.graphics.lineTo(line.ponint2.crdX, line.ponint2.crdY);
+    var drawingLine = new createjs.Shape();
+    lineContainer.addChild(drawingLine);
+    drawingLine.graphics.clear();
+    drawingLine.graphics.setStrokeStyle(3);
+    drawingLine.graphics.beginStroke(line.color);
+    drawingLine.graphics.moveTo(line.point1.x, line.point1.y);
+    drawingLine.graphics.lineTo(line.point2.x, line.point2.y);
 
-    connection.alpha = 0;
+    drawingLine.alpha = 0;
 
-    createjs.Tween.get(connection).to({
+    createjs.Tween.get(drawingLine).to({
         alpha: 1
     }, 500);
+}
+
+function drawSquare(squares, scorePlayer) {
+
+    for (square of squares) {
+        var rect = new createjs.Shape();
+        rect.graphics.beginFill(scorePlayer.color).drawRect(square.points[0].x - 1, square.points[0].y - 1, 102, 102);
+        squareContainer.addChild(rect);
+
+        rect.alpha = 0;
+
+        createjs.Tween.get(rect).to({
+            alpha: 1
+        }, 500);
+    }
 
 }
 
