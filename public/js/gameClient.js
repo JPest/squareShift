@@ -196,12 +196,14 @@ function fimLinha(event) {
         lineContainer.removeChild(connection);
     }
 
-    if (target != null && validateMove(first_point, last_point)) {
-        var line = game.lines[lineName(first_point, last_point)];
-        line.filled = true;
-        line.color = player.color;
+    if (target != null && last_point != first_point) {
+        if (validateMove(first_point, last_point)) {
+            var line = game.lines[lineName(first_point, last_point)];
+            line.filled = true;
+            line.color = player.color;
 
-        socket.emit("play", line);
+            socket.emit("play", line);
+        }
 
     } else {
         lineContainer.removeChild(connection);
