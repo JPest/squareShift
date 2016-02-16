@@ -178,7 +178,6 @@ function fimLinha(event) {
 
     stage.removeEventListener("stagemouseup");
     stage.removeEventListener("stagemousemove");
-    lineContainer.removeChild(connection);
 
     first_point = game.points[(mouseDownTarget.y - 50) / 100][(mouseDownTarget.x - 400) / 100]
 
@@ -193,16 +192,19 @@ function fimLinha(event) {
     var last_point;
     if (target) {
         last_point = game.points[(target.y - 50) / 100][(target.x - 400) / 100];
+    } else {
+        lineContainer.removeChild(connection);
     }
 
     if (target != null && validateMove(first_point, last_point)) {
-
         var line = game.lines[lineName(first_point, last_point)];
         line.filled = true;
         line.color = player.color;
 
         socket.emit("play", line);
 
+    } else {
+        lineContainer.removeChild(connection);
     }
 
 
@@ -222,6 +224,7 @@ function drawLine(line) {
     createjs.Tween.get(drawingLine).to({
         alpha: 1
     }, 500);
+    lineContainer.removeChild(connection);
 }
 
 function drawSquare(squares, scorePlayer) {
