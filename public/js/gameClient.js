@@ -230,6 +230,63 @@ function drawSquare(squares, scorePlayer) {
 
 }
 
+
+function placar(){
+    var ctnPlacar = new createjs.Container();
+    ctnPlacar.x = 0;
+    ctnPlacar.y = 0;
+    
+    
+    var myRect = new createjs.Shape();
+    myRect.graphics.beginFill("DeepSkyBlue").drawRect(0, 0, 500,100);
+    myRect.width = myRect.graphics.command.w;
+    myRect.height = myRect.graphics.command.h;
+    myRect.x = 0;
+    myRect.y = 0;
+    stage.addChild(myRect);
+
+
+    var placarTitulo = new createjs.Text("Placar", "30px Arial", "#000000");
+    placarTitulo.x = myRect.width/2 - 55;
+    placarTitulo.y = 0;
+    ctnPlacar.addChild(placarTitulo);
+
+    
+    var tituloPlayer01 = new createjs.Text("Player 1", "30px Arial", "#000000");
+    tituloPlayer01.x = 0;
+    tituloPlayer01.y = 0.2*myRect.height;
+    ctnPlacar.addChild(tituloPlayer01);
+    
+    var valorPlayer01 = new createjs.Text(3, "30px Arial", "#000000");
+    valorPlayer01.x = 0;
+    valorPlayer01.y = 0.5*myRect.height;
+    ctnPlacar.addChild(valorPlayer01);
+    
+    var tituloPlayer02 = new createjs.Text("Player 2", "30px Arial", "#000000");
+    tituloPlayer02.x = 0.4*myRect.width;
+    tituloPlayer02.y = 0.2*myRect.height;
+    ctnPlacar.addChild(tituloPlayer02);
+    
+    var valorPlayer02 = new createjs.Text(8, "30px Arial", "#000000");
+    valorPlayer02.x = 0.3*myRect.width;
+    valorPlayer02.y = 0.5*myRect.height;
+    ctnPlacar.addChild(valorPlayer02);
+
+    var tituloPlayer03 = new createjs.Text("Player 3", "30px Arial", "#000000");
+    tituloPlayer03.x = 0;
+    tituloPlayer03.y = 0.2*myRect.height;
+    ctnPlacar.addChild(tituloPlayer03);
+    
+    var valorPlayer03 = new createjs.Text(6, "30px Arial", "#000000");
+    valorPlayer03.x = 0.6*myRect.width;
+    valorPlayer03.y = 0.5*myRect.height;
+    ctnPlacar.addChild(valorPlayer03);
+    
+    stage.addChild(ctnPlacar);
+}
+
 function tick(event) {
     stage.update();
 }
+
+placar();
